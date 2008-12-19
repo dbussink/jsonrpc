@@ -1,0 +1,5 @@
+Extremely simple Ruby JSON RPC Client
+
+This plugin lets you easily call methods over a JSON RPC interface. It
+currently implements the bare minimum, feel free to submit pull requests
+if you implement additional functionality.
