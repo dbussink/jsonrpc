@@ -69,7 +69,7 @@ describe JsonRPC::Client do
     end
 
     it 'should receive the correct call at the http level' do
-      Net::HTTP.raw_post_body.should == '{"params":{"param1":"value1","param2":"value2"},"method":"test_method","id":null}'
+      JSON.parse(Net::HTTP.raw_post_body).should == JSON.parse('{"params":{"param1":"value1","param2":"value2"},"method":"test_method"}')
     end
 
     it 'should correctly parse the response from the server' do
