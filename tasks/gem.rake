@@ -20,12 +20,11 @@ namespace :gem do
 
     s.add_development_dependency("rake", ">= 0.7.3")
     s.add_development_dependency("rspec", ">= 1.0.8")
-    s.add_development_dependency("launchy", ">= 0.3.2")
 
     s.require_path = "lib"
 
-    s.author = "Bob Aman"
-    s.email = "bob@sporkmonger.com"
+    s.author = "Dirkjan Bussink"
+    s.email = "d.bussink@gmail.com"
     s.homepage = RUBY_FORGE_URL
     s.rubyforge_project = RUBY_FORGE_PROJECT
   end
