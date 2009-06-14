@@ -1,6 +1,3 @@
-gem 'addressable', '~>2.0.0'
-gem 'json'
-
 require 'net/http'
 require 'addressable/uri'
 require 'json'

@@ -18,6 +18,7 @@ namespace :gem do
       exit(1)
     end
 
+    s.add_dependency("addressable")
     s.add_development_dependency("rake", ">= 0.7.3")
     s.add_development_dependency("rspec", ">= 1.0.8")
 
