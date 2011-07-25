@@ -43,10 +43,19 @@ class Net::HTTP < Net::Protocol
     @raw_post_path
   end
 
+  def self.raw_headers=(headers)
+    @raw_headers = headers
+  end
+
+  def self.raw_headers
+    @raw_headers
+  end
+
   def post(path, body, headers = [])
     res = Net::HTTPSuccess.new('1.2', '200', 'OK')
     self.class.raw_post_path = path
     self.class.raw_post_body = body
+    self.class.raw_headers   = headers
     res.body = self.class.raw_response_data
     res
   end
@@ -76,6 +85,10 @@ describe JsonRPC::Client do
       @result.should == {"result" => 200, "message" => "what a great success!"}
     end
     
+    it 'should set the headers to application/json' do
+      Net::HTTP.raw_headers.should include("Content-Type" => "application/json")
+    end
+
   end
 
   describe 'when it is not successful' do
