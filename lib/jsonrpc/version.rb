@@ -1,11 +1,5 @@
-if !defined?(JsonRPC::VERSION)
-  module JsonRPC
-    module VERSION #:nodoc:
-      MAJOR = 0
-      MINOR = 9
-      TINY  = 2
-
-      STRING = [MAJOR, MINOR, TINY].join('.')
-    end
+module JsonRPC
+  if !defined?(::JsonRPC::VERSION)
+    VERSION = "0.9.3"
   end
 end

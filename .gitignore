@@ -5,3 +5,5 @@ cov
 pkg
 .DS_Store
 coverage/*
+*.un~
+*.swp

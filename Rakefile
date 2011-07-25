@@ -1,49 +1,22 @@
-lib_dir = File.expand_path(File.join(File.dirname(__FILE__), "lib"))
-$:.unshift(lib_dir)
-$:.uniq!
-
 require 'rubygems'
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
-require 'rake/packagetask'
-require 'rake/gempackagetask'
-require 'rake/contrib/rubyforgepublisher'
-require 'spec/rake/spectask'
+require 'rspec'
+require 'rspec/core/rake_task'
 
-require File.join(File.dirname(__FILE__), 'lib/jsonrpc', 'version')
+$LOAD_PATH.unshift File.expand_path("../lib", __FILE__)
+require "jsonrpc/version"
 
-PKG_DISPLAY_NAME   = 'JsonRPC'
-PKG_NAME           = PKG_DISPLAY_NAME.downcase
-PKG_VERSION        = JsonRPC::VERSION::STRING
-PKG_FILE_NAME      = "#{PKG_NAME}-#{PKG_VERSION}"
 
-RELEASE_NAME       = "REL #{PKG_VERSION}"
-
-RUBY_FORGE_PROJECT = PKG_NAME
-RUBY_FORGE_USER    = "dbussink"
-RUBY_FORGE_PATH    = "/var/www/gforge-projects/#{RUBY_FORGE_PROJECT}"
-RUBY_FORGE_URL     = "http://#{RUBY_FORGE_PROJECT}.rubyforge.org/"
-
-PKG_SUMMARY        = "JSON RPC implementation"
-PKG_DESCRIPTION    = <<-TEXT
-Very simple JSON RPC client implementation
-TEXT
-
-PKG_FILES = FileList[
-    "lib/**/*", "spec/**/*", "vendor/**/*",
-    "tasks/**/*", "website/**/*",
-    "[A-Z]*", "Rakefile"
-].exclude(/database\.yml/).exclude(/[_\.]git$/)
-
-RCOV_ENABLED = (RUBY_PLATFORM != "java" && RUBY_VERSION =~ /^1\.8/)
-if RCOV_ENABLED
-  task :default => "spec:verify"
-else
-  task :default => "spec"
+RSpec::Core::RakeTask.new do |t|
+  t.rspec_opts = %w(-fs --color)
 end
 
-WINDOWS = (RUBY_PLATFORM =~ /mswin|win32|mingw|bccwin|cygwin/) rescue false
-SUDO = WINDOWS ? '' : ('sudo' unless ENV['SUDOLESS'])
+desc "Build the gem"
+task :build do
+  system "gem build jsonrpc.gemspec"
+end
 
-Dir['tasks/**/*.rake'].each { |rake| load rake }
+desc "Release the gem"
+task :release => :build do
+  system "gem push jsonrpc-#{JsonRPC::VERSION}.gem"
+end
