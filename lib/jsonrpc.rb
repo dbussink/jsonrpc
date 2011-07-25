@@ -16,8 +16,9 @@ module JsonRPC
     def request(method, params)
       result = {}
       params ||= {}
+      h = {"Content-Type", "application/json"}
       Net::HTTP.start(@address.host, @address.port) do |connection|
-        result = JSON.parse(connection.post(@address.path, {:method => method.to_s, :params => params}.to_json).body)
+        result = JSON.parse(connection.post(@address.path, {:method => method.to_s, :params => params}.to_json, h).body)
       end
       if error = result["error"]
         raise JsonRPCError, error["message"]
