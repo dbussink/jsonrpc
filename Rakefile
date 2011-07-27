@@ -11,6 +11,8 @@ RSpec::Core::RakeTask.new do |t|
   t.rspec_opts = %w(-fs --color)
 end
 
+task :default => [:spec]
+
 desc "Build the gem"
 task :build do
   system "gem build jsonrpc.gemspec"
