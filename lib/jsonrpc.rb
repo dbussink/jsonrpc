@@ -11,15 +11,18 @@ module JsonRPC
 
     def initialize(url)
       @address    = Addressable::URI.parse(url)
+      @id         = 0
     end
 
     def request(method, params)
+      @id += 1
       result = {}
       params ||= {}
       h = {"Content-Type" => "application/json"}
       Net::HTTP.start(@address.host, @address.port) do |connection|
         path = @address.path + (@address.query ? "?#{@address.query}" : "")
-        result = JSON.parse(connection.post(path, {:method => method.to_s, :params => params}.to_json, h).body)
+        body = {:method => method.to_s, :params => params, :id => @id}
+        result = JSON.parse(connection.post(path, body.to_json, h).body)
       end
       if error = result["error"]
         raise JsonRPCError, error["message"]
